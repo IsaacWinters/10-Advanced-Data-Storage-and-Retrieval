@@ -110,7 +110,7 @@ def calc_temps(start_date):
     return jsonify(columndata)
 
 @app.route("/api/v1.0/<start>/<end>")
-def calc_temps(start_date,end_date):
+def calc_temps2(start_date,end_date):
     conn = sqlite3.connect("Resources/Hawaii.sqlite")
     cur = conn.cursor()
     cur.execute("select date min(tobs) as 'min', max(tobs) as 'max', avg(tobs) as 'avg' from measurement group by date order by date asc")  
