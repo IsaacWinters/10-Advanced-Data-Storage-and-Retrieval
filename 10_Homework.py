@@ -27,7 +27,7 @@ cur = conn.cursor()
 @app.route("/")
 def home():
     """List all available api routes."""
-    return ("Available Routes:<br>\n/api/v1.0/precipitation<br>\n/api/v1.0/stations<br>\n/api/v1.0/tobs<br>\n/api/v1.0/<start>\n/api/v1.0/<start>/<end>")
+    return ("Available Routes:<br>\n/api/v1.0/precipitation<br>\n/api/v1.0/stations<br>\n/api/v1.0/tobs<br>\n/api/v1.0/startdate<br>\n/api/v1.0/startdate/enddate")
 
 # Convert the query results to a Dictionary using date as the key and prcp as the value.
 # Return the JSON representation of your dictionary.
@@ -93,7 +93,7 @@ def tobs():
 def calc_temps(start_date):
     conn = sqlite3.connect("Resources/Hawaii.sqlite")
     cur = conn.cursor()
-    cur.execute("select date min(tobs) as 'min', max(tobs) as 'max', avg(tobs) as 'avg' from measurement group by date order by date asc")  
+    cur.execute("select min(tobs) as 'min', max(tobs) as 'max', avg(tobs) as 'avg' from measurement where date >= '" + str(start_date) + "' order by date asc")  
     rows = cur.fetchall()
     min_list =[]
     max_list =[]
@@ -113,7 +113,7 @@ def calc_temps(start_date):
 def calc_temps2(start_date,end_date):
     conn = sqlite3.connect("Resources/Hawaii.sqlite")
     cur = conn.cursor()
-    cur.execute("select date min(tobs) as 'min', max(tobs) as 'max', avg(tobs) as 'avg' from measurement group by date order by date asc")  
+    cur.execute("select min(tobs) as 'min', max(tobs) as 'max', avg(tobs) as 'avg' from measurement where date between " +str(start_date)+ " and " + str(end_date) +" order by date asc")  
     rows = cur.fetchall()
     min_list =[]
     max_list =[]
